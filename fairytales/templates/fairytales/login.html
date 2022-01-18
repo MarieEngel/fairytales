@@ -1,0 +1,12 @@
+
+{% extends 'fairytales/base.html' %}
+{% block content %}
+<h1>Login</h1>
+    
+    <form method="post">
+        {{ form.as_p }}
+        {% csrf_token %}
+        <button type="submit" class="btn btn-sm btn-outline-secondary">Submit</button>
+    </form>
+    <p>{{ success_message }}</p>
+{% endblock content %}

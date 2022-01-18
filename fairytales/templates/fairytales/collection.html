@@ -1,0 +1,17 @@
+{% extends 'fairytales/base.html' %} {%block title%}Browse by collection{%endblock%}
+{%block content%}
+
+<h1>Browse my collection of Fairytales:</h1>
+<p>
+    <ul>
+        {% for fairytale in collection_list %}
+        <li><a href="{%url "fairytale" fairytale.slug %}">{{fairytale.title}}</li>
+        {% endfor %}
+    </ul>
+</p>
+<br/>
+<a href="{%url "index"%}">Back to home</a>
+
+{%endblock%}
+
+

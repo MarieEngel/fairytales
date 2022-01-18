@@ -1,0 +1,25 @@
+body {
+    background-color: #9e6f08;
+    margin: 0;
+    padding: 0;
+}
+
+.title {
+    display: block;
+    margin: 10px;
+    width: 450px;
+    margin-right: auto;
+    margin-left: auto;
+    margin-bottom: 40px;
+    border-radius: 15px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: 'Helvetica', Courier, monospace;
+    color: #472102;
+}

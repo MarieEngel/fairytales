@@ -1,0 +1,15 @@
+{% extends 'fairytales/base.html' %} {%block title%}{{collection.title}}{%endblock%}
+{%block content%}
+
+<h1>{{collection.title}}</h1>
+<h3>{{collection.author}}</h3>
+<hr>
+</br>
+{% if collection.image %}
+    <p><img src="{{ collection.image.url }}" alt="New Image" /></p>
+{% endif %}
+<p>{{ collection.body}}</p>
+<br/>
+<a href="{%url "collection"%}">Back to my collection of Fairytales</a>
+
+{%endblock%}
