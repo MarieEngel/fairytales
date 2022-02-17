@@ -1,5 +1,5 @@
 from django import forms
-from django.forms import ModelForm
+from django.forms import HiddenInput, ModelForm
 
 from .models import Fairytale
 
@@ -14,7 +14,10 @@ class LoginForm(forms.Form):
 class AddFairytaleForm(ModelForm):
     class Meta:
         model = Fairytale
-        fields = ["title", "author", "image", "body", "slug"]
+        fields = ["title", "author", "image", "body", "slug", "posted_by"]
+        widgets = {
+            "posted_by": HiddenInput()
+        }
 
 
 class SearchForm(forms.Form):
