@@ -1,4 +1,6 @@
+from django.core.paginator import Paginator
 from django.contrib.auth import login, logout, authenticate
+from django.contrib.postgres.search import SearchVector
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import Fairytale
@@ -13,9 +15,12 @@ def index(request):
 
 
 def collection(request):
-    collection_list = Fairytale.objects.all()
+    collection_list = Fairytale.objects.all().order_by("-id")
+    paginator = Paginator(collection_list, 5) # show 5  fairytale titles per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
     return render(
-        request, "fairytales/collection.html", {"collection_list": collection_list}
+        request, "fairytales/collection.html", {"collection_list": collection_list, 'page_obj': page_obj}
     )
 
 
@@ -81,8 +86,9 @@ def search(request):
         if is_valid:
             search_term = request.GET['query']
             search_results = Fairytale.objects.filter(
-                Q(title__icontains=search_term) | Q(body__icontains=search_term)
+                Q(title__icontains=search_term) | Q(body__icontains=search_term) | Q(author__icontains=search_term)
             )
+            # search_results =  Fairytale.objects.annotate(search=SearchVector('title', 'body', 'author')).filter(search='search_term')
             if search_results:
                 success_message = f'Fairytales matching "{search_term}":'
             else:
