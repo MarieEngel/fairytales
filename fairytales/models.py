@@ -11,7 +11,7 @@ class Fairytale(models.Model):
     image = models.ImageField(null=True, blank=True, upload_to="images/")
     body = models.TextField()
     slug = models.SlugField(unique=True)
-    posted_by = models.ForeignKey(User, on_delete=models.CASCADE, default= 1, editable=True)
+    posted_by = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
     vector_column = SearchVectorField(null=True)  # don't use 'models.' before search
 
     class Meta:
@@ -19,5 +19,3 @@ class Fairytale(models.Model):
 
     def __str__(self):
         return f"{self.title} - {self.author}"
-
-        
