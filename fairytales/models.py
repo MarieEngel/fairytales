@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 from django.contrib.postgres.indexes import GinIndex
 from django.contrib.postgres.search import SearchVectorField
 # Create your models here.
@@ -10,6 +11,7 @@ class Fairytale(models.Model):
     image = models.ImageField(null=True, blank=True, upload_to="images/")
     body = models.TextField()
     slug = models.SlugField(unique=True)
+    posted_by = models.ForeignKey(User, on_delete=models.CASCADE, default= 1, editable=True)
     vector_column = SearchVectorField(null=True)  # don't use 'models.' before search
 
     class Meta:
@@ -17,3 +19,5 @@ class Fairytale(models.Model):
 
     def __str__(self):
         return f"{self.title} - {self.author}"
+
+        
