@@ -72,7 +72,7 @@ def add_fairytale(request):
         else:
             success_message = "The form needs fixes."
     else:
-        form = AddFairytaleForm()
+        form = AddFairytaleForm(initial={"posted_by": request.user})
     context = {"form": form, "success_message": success_message}
     return render(request, "fairytales/add_fairytale.html", context)
 
@@ -88,7 +88,6 @@ def search(request):
             search_results = Fairytale.objects.filter(
                 Q(title__icontains=search_term) | Q(body__icontains=search_term) | Q(author__icontains=search_term)
             )
-            # search_results =  Fairytale.objects.annotate(search=SearchVector('title', 'body', 'author')).filter(search='search_term')
             if search_results:
                 success_message = f'Fairytales matching "{search_term}":'
             else:
