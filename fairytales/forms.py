@@ -11,14 +11,19 @@ class LoginForm(forms.Form):
     )  # hides the input
 
 
+# class AddFairytaleForm(ModelForm):
+#     class Meta:
+#         model = Fairytale
+#         fields = ["title", "author", "image", "body", "slug", "posted_by"]
+#         widgets = {
+#             "posted_by": HiddenInput()
+#         }
+
 class AddFairytaleForm(ModelForm):
     class Meta:
         model = Fairytale
-        fields = ["title", "author", "image", "body", "slug", "posted_by"]
-        widgets = {
-            "posted_by": HiddenInput()
-        }
-
+        exclude= ['posted_by', 'vector_column']
+        
 
 class SearchForm(forms.Form):
     query = forms.CharField(label="Search term", max_length=50)
