@@ -63,7 +63,8 @@ def add_fairytale(request):
     success_message = ""
     form = None
     if request.method == "POST":
-        form = AddFairytaleForm(request.POST, request.FILES)
+        fairytale = Fairytale(posted_by=request.user)
+        form = AddFairytaleForm(request.POST, request.FILES, instance=fairytale)
         is_valid = form.is_valid()
         if is_valid:
             form.save()
@@ -72,7 +73,7 @@ def add_fairytale(request):
         else:
             success_message = "The form needs fixes."
     else:
-        form = AddFairytaleForm(initial={"posted_by": request.user})
+        form = AddFairytaleForm()
     context = {"form": form, "success_message": success_message}
     return render(request, "fairytales/add_fairytale.html", context)
 
