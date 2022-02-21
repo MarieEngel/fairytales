@@ -5,7 +5,7 @@
 <p>
     <ul>
         {% for fairytale in page_obj %}
-        <li><a href="{%url "fairytale" fairytale.slug %}">{{fairytale.title}}, {{fairytale.author}} (posted by {{fairytale.posted_by}})</li>
+        <li><a href="{%url "fairytale" fairytale.slug %}"> {{fairytale.title}}</a> - <a href="{% url 'category' post.category%}">{{fairytale.category}}</a>  - {{fairytale.author}} (posted by {{fairytale.posted_by}})</li>
         {% endfor %}
     </ul>
 </p>
