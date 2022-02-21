@@ -1,15 +1,23 @@
-{% extends 'fairytales/base.html' %} {%block title%}{{collection.title}}{%endblock%}
+{% extends 'fairytales/base.html' %} {%block title%}{{fairytale.title}}{%endblock%}
 {%block content%}
 
-<h1>{{collection.title}}</h1>
-<h3>{{collection.author}}</h3>
-<p>posted by {{collection.posted_by}}</p>
+<h1>{{fairytale.title}}</h1>
+<h3>{{fairytale.author}}</h3>
+<p><small>posted by
+    {{fairytale.posted_by}}
+    {% if user.is_authenticated%}
+        {% if user.id == fairytale.posted_by.id %}
+            - <a href="{%url 'update_fairytale' fairytale.id %}"> (Edit)</a>
+            - <a href="{%url 'delete_fairytale' fairytale.id %}"> (Delete)</a>
+        {% endif %}
+    {% endif %}
+</small></p>
 <hr>
 </br>
-{% if collection.image %}
-    <p><img src="{{ collection.image.url }}" alt="New Image" /></p>
+{% if fairytale.image %}
+    <p><img src="{{ fairytale.image.url }}" alt="New Image" /></p>
 {% endif %}
-<p>{{ collection.body}}</p>
+<p>{{ fairytale.body}}</p>
 <br/>
 <a href="{%url "collection"%}">Back to my collection of Fairytales</a>
 
