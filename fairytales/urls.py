@@ -13,4 +13,6 @@ urlpatterns = [
     path("profile/",views.profile, name="profile" ),
     path("add_category/", views.add_category, name="add_category"),
     path("category/<str:cats>/",views.CategoryView, name="category"),
+    path("collection/edit/<int:id>/", views.update_fairytale, name="update_fairytale"),
+    path("collection/<int:id>/delete", views.delete_fairytale, name="delete_fairytale"),
 ]
