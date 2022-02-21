@@ -13,9 +13,35 @@ class Fairytale(models.Model):
     slug = models.SlugField(unique=True)
     posted_by = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
     vector_column = SearchVectorField(null=True)  # don't use 'models.' before search
+    category = models.CharField(max_length=100, default='uncategorized')
 
     class Meta:
         indexes = (GinIndex(fields=["vector_column"]),)
 
     def __str__(self):
-        return f"{self.title} - {self.author}"
+        return f"{self.title} - {self.author}"    
+
+
+    
+class Category(models.Model):
+    name= models.CharField(max_length=100)
+
+    class Meta:
+        verbose_name = 'Category'
+        verbose_name_plural = 'Categories'
+
+    def __str__(self):
+        return self.name
+
+
+
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)  
+    bio = models.TextField(null=True, blank=True)  
+    prefered_settings = models.JSONField(null=True, blank=True) 
+    image = models.ImageField(default='default.png', upload_to='profile_pics')
+   
+
+    def __str__(self):
+        return f'{self.user.username} Profile'
