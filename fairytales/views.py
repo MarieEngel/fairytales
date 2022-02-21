@@ -2,7 +2,7 @@ from django.core.paginator import Paginator
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required 
 from django.contrib.postgres.search import SearchVector
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from django.http import HttpResponse
 from .models import Fairytale, Category
 from .forms import AddFairytaleForm, LoginForm, SearchForm, ProfileUpdateForm, CategoryForm
@@ -28,7 +28,7 @@ def collection(request):
 
 def fairytale(request, slug):
     fairytale = Fairytale.objects.get(slug=slug)
-    context = {"collection": fairytale}
+    context = {"fairytale": fairytale}
     return render(request, "fairytales/fairytale.html", context)
 
 def CategoryView(request, cats):
@@ -88,12 +88,37 @@ def add_fairytale(request):
     context = {"form": form, "success_message": success_message}
     return render(request, "fairytales/add_fairytale.html", context)
 
+def update_fairytale(request, id):
+    success_message = ""
+    form = None
+    fairytale = get_object_or_404(Fairytale, id = id)
+    form = AddFairytaleForm(request.POST or None, instance = fairytale)
+    if form.is_valid():
+        form.save()
+        return redirect("/fairytales")
+    context = {
+        "form": form,
+        "success_message": success_message,
+        "fairytale": fairytale
+    }
+    return render(request, "fairytales/update_fairytale.html", context)
+
+
+def delete_fairytale(request, id):
+    fairytale = get_object_or_404(Fairytale, id = id)
+    if request.method =="POST":
+        fairytale.delete()
+        return redirect("/fairytales")
+
+    return render(request, "fairytales/delete_fairytale.html")
+
+
 
 def add_category(request):
     success_message = ""
     form = None
     if request.method == "POST":
-        form= CategoryForm(request.POST)    
+        form= CategoryForm(request.POST)
         is_valid = form.is_valid()
         if is_valid:
             form.save()
@@ -136,7 +161,7 @@ def profile(request):
     if request.method == 'POST':
         p_form = ProfileUpdateForm(request.POST,
                                    request.FILES,
-                                   instance=request.user.profile) 
+                                   instance=request.user.profile)
         if p_form.is_valid():
             p_form.save()
             success_message=f'Your account has been updated!'
