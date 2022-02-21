@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.postgres.indexes import GinIndex
 from django.contrib.postgres.search import SearchVectorField
+
 # Create your models here.
 
 
@@ -19,10 +20,10 @@ class Fairytale(models.Model):
         indexes = (GinIndex(fields=["vector_column"]),)
 
     def __str__(self):
-        return f"{self.title} - {self.author}"    
+        return f"{self.title} - {self.author}"
 
 
-    
+
 class Category(models.Model):
     name= models.CharField(max_length=100)
 
@@ -37,11 +38,10 @@ class Category(models.Model):
 
 
 class Profile(models.Model):
-    user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)  
-    bio = models.TextField(null=True, blank=True)  
-    prefered_settings = models.JSONField(null=True, blank=True) 
-    image = models.ImageField(default='default.png', upload_to='profile_pics')
-   
+    user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
+    bio = models.TextField(null=True, blank=True)
+    prefered_settings = models.JSONField(null=True, blank=True)
+    image = models.ImageField(default='profile_pics/default.png', upload_to='profile_pics')
 
     def __str__(self):
         return f'{self.user.username} Profile'
