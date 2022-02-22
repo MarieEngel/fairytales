@@ -49,5 +49,8 @@ class CommentForm(ModelForm):
     class Meta:
         model = Comment
         fields = '__all__'
+        widgets = {
+            'fairytale': HiddenInput()
+        }
 
 
