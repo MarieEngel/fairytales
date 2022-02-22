@@ -22,10 +22,10 @@
 <hr>
 <h3>Comments...</h3>
 {%if not fairytale.comments.all%}
-    No Comments yet. <a href="#">
+    No Comments yet. <a href="{% url 'add_comment' fairytale.pk %}">
         Leave a Comment</a>
 {%else%}
-<a href="#">Add Comment</a>
+<a href="{% url 'add_comment' fairytale.pk %}">Add Comment</a>
 </br>
         {%for comment in fairytale.comments.all %}
             <strong>
@@ -34,6 +34,7 @@
             </strong>
             <br/>
             {{comment.body}}
+        </br>
         {%endfor%}
 {%endif%}
 <br/>
