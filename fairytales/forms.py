@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import HiddenInput, ModelForm
 
-from .models import Fairytale, Profile, Category
+from .models import Fairytale, Profile, Category, Comment
 
 
 class LoginForm(forms.Form):
@@ -43,6 +43,11 @@ class ProfileUpdateForm(ModelForm):
 class CategoryForm(ModelForm):
     class Meta:
         model = Category
+        fields = '__all__'
+
+class CommentForm(ModelForm):
+    class Meta:
+        model = Comment
         fields = '__all__'
 
 
