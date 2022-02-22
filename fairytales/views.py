@@ -4,8 +4,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.postgres.search import SearchVector
 from django.shortcuts import get_object_or_404, render, redirect
 from django.http import HttpResponse
-from .models import Fairytale, Category
-from .forms import AddFairytaleForm, LoginForm, SearchForm, ProfileUpdateForm, CategoryForm
+from .models import Fairytale, Category, Comment
+from .forms import AddFairytaleForm, LoginForm, SearchForm, ProfileUpdateForm, CategoryForm, CommentForm
 from django.db.models import Q
 
 
@@ -88,6 +88,8 @@ def add_fairytale(request):
     context = {"form": form, "success_message": success_message}
     return render(request, "fairytales/add_fairytale.html", context)
 
+
+
 def update_fairytale(request, id):
     success_message = ""
     form = None
@@ -131,6 +133,23 @@ def add_category(request):
     context = {"form": form, "success_message": success_message}
     return render(request, "fairytales/add_category.html", context)
 
+
+def add_comment(request, pk):
+    success_message = ""
+    form = None
+    if request.method == "POST":
+        form = CommentForm(request.POST or None)
+        is_valid = form.is_valid()
+        if is_valid:
+            form.save()
+            success_message = "Your comment has been saved."
+            return redirect("/fairytales")
+        else:
+            success_message = "The form needs fixes."
+    else:
+        form = CommentForm()
+    context = {"form": form, "success_message": success_message}
+    return render(request, "fairytales/add_comment.html", context)
 
 def search(request):
     success_message = ""
