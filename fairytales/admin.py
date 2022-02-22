@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Fairytale, Profile, Category
+from .models import Fairytale, Profile, Category, Comment
 
 # Register your models here.
 
@@ -7,3 +7,4 @@ from .models import Fairytale, Profile, Category
 admin.site.register(Fairytale)
 admin.site.register(Profile)
 admin.site.register(Category)
+admin.site.register(Comment)
