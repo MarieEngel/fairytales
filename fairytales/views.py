@@ -18,7 +18,7 @@ def index(request):
 
 def collection(request):
     collection_list = Fairytale.objects.all().order_by("-id")
-    paginator = Paginator(collection_list, 5) # show 5  fairytale titles per page
+    paginator = Paginator(collection_list, 10) # show 10  fairytale titles per page
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     return render(
