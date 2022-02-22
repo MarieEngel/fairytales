@@ -19,6 +19,26 @@
 {% endif %}
 <p>{{ fairytale.body}}</p>
 <br/>
+<hr>
+<h3>Comments...</h3>
+{%if not fairytale.comments.all%}
+    No Comments yet. <a href="#">
+        Leave a Comment</a>
+{%else%}
+<a href="#">Add Comment</a>
+</br>
+        {%for comment in fairytale.comments.all %}
+            <strong>
+                {{comment.name}} -
+                {{comment.date}}
+            </strong>
+            <br/>
+            {{comment.body}}
+        {%endfor%}
+{%endif%}
+<br/>
+<br/>
+<hr>
 <a href="{%url "collection"%}">Back to my collection of Fairytales</a>
 
 {%endblock%}
