@@ -147,7 +147,11 @@ def add_comment(request, pk):
         else:
             success_message = "The form needs fixes."
     else:
-        form = CommentForm()
+        form = CommentForm(initial={
+            'fairytale': pk,
+            'name': request.user
+        })
+
     context = {"form": form, "success_message": success_message}
     return render(request, "fairytales/add_comment.html", context)
 
