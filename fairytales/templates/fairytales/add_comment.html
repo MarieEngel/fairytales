@@ -4,7 +4,7 @@
     <form method="post">
         {{ form.as_p }}
         {% csrf_token %}
-        <button type="submit" class="btn btn-sm btn-outline-secondary">Leave Comment</button>
+        <button type="submit" class="btn btn-sm btn-light">Leave Comment</button>
     </form>
     <p>{{ success_message }}</p>
 {% endblock content %}
