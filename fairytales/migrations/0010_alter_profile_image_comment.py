@@ -7,23 +7,40 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('fairytales', '0009_alter_category_options'),
+        ("fairytales", "0009_alter_category_options"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='profile',
-            name='image',
-            field=models.ImageField(default='profile_pics/default.png', upload_to='profile_pics'),
+            model_name="profile",
+            name="image",
+            field=models.ImageField(
+                default="profile_pics/default.png", upload_to="profile_pics"
+            ),
         ),
         migrations.CreateModel(
-            name='Comment',
+            name="Comment",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=255)),
-                ('body', models.TextField()),
-                ('date', models.DateTimeField(auto_now_add=True)),
-                ('fairytale', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='comments', to='fairytales.fairytale')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=255)),
+                ("body", models.TextField()),
+                ("date", models.DateTimeField(auto_now_add=True)),
+                (
+                    "fairytale",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="comments",
+                        to="fairytales.fairytale",
+                    ),
+                ),
             ],
         ),
     ]

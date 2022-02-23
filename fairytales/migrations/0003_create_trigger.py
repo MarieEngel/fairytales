@@ -6,7 +6,7 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('fairytales', '0002_fairytale_vector_column_and_more'),
+        ("fairytales", "0002_fairytale_vector_column_and_more"),
     ]
 
     operations = [
@@ -18,14 +18,12 @@ class Migration(migrations.Migration):
         #         setweight(to_tsvector('english', coalesce(author,'')), 'C')
         #       ) STORED;
         #     ''',
-
         #     reverse_sql = '''
         #       ALTER TABLE fairytale DROP COLUMN vector_column;
         #     '''
         # ),
-
         migrations.RunSQL(
-            sql='''
+            sql="""
             CREATE TRIGGER fairytale_update_trigger
             BEFORE INSERT OR UPDATE OF title, body, author, vector_column
             ON fairytales_fairytale
@@ -34,12 +32,10 @@ class Migration(migrations.Migration):
               vector_column, 'pg_catalog.english', title, body, author);
 
             UPDATE fairytales_fairytale SET vector_column = NULL;
-            ''',
-
-            reverse_sql='''
+            """,
+            reverse_sql="""
             DROP TRIGGER IF EXISTS fairytale_update_trigger
             ON fairytales_fairytale;
-            '''),
-
-
+            """,
+        ),
     ]

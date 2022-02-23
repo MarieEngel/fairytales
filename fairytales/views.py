@@ -1,11 +1,18 @@
 from django.core.paginator import Paginator
 from django.contrib.auth import login, logout, authenticate
-from django.contrib.auth.decorators import login_required 
+from django.contrib.auth.decorators import login_required
 from django.contrib.postgres.search import SearchVector
 from django.shortcuts import get_object_or_404, render, redirect
 from django.http import HttpResponse
 from .models import Fairytale, Category, Comment
-from .forms import AddFairytaleForm, LoginForm, SearchForm, ProfileUpdateForm, CategoryForm, CommentForm
+from .forms import (
+    AddFairytaleForm,
+    LoginForm,
+    SearchForm,
+    ProfileUpdateForm,
+    CategoryForm,
+    CommentForm,
+)
 from django.db.models import Q
 
 
@@ -18,11 +25,13 @@ def index(request):
 
 def collection(request):
     collection_list = Fairytale.objects.all().order_by("-id")
-    paginator = Paginator(collection_list, 10) # show 10  fairytale titles per page
-    page_number = request.GET.get('page')
+    paginator = Paginator(collection_list, 10)  # show 10  fairytale titles per page
+    page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
     return render(
-        request, "fairytales/collection.html", {"collection_list": collection_list, 'page_obj': page_obj}
+        request,
+        "fairytales/collection.html",
+        {"collection_list": collection_list, "page_obj": page_obj},
     )
 
 
@@ -31,13 +40,10 @@ def fairytale(request, slug):
     context = {"fairytale": fairytale}
     return render(request, "fairytales/fairytale.html", context)
 
+
 def CategoryView(request, cats):
     category_entries = Fairytale.objects.filter(category=cats)
-    context = {
-        'category_entries': category_entries,
-        'cats': cats
-
-    }
+    context = {"category_entries": category_entries, "cats": cats}
     return render(request, "fairytales/categories.html", context)
 
 
@@ -54,7 +60,7 @@ def login_page(request):
             if user:
                 login(request, user)
                 success_message = f"Hi {user.username}, you have been logged in."
-                return redirect('/fairytales')
+                return redirect("/fairytales")
             else:
                 success_message = "Login failed."
         else:
@@ -89,38 +95,32 @@ def add_fairytale(request):
     return render(request, "fairytales/add_fairytale.html", context)
 
 
-
 def update_fairytale(request, id):
     success_message = ""
     form = None
-    fairytale = get_object_or_404(Fairytale, id = id)
-    form = AddFairytaleForm(request.POST or None, instance = fairytale)
+    fairytale = get_object_or_404(Fairytale, id=id)
+    form = AddFairytaleForm(request.POST or None, instance=fairytale)
     if form.is_valid():
         form.save()
         return redirect("/fairytales")
-    context = {
-        "form": form,
-        "success_message": success_message,
-        "fairytale": fairytale
-    }
+    context = {"form": form, "success_message": success_message, "fairytale": fairytale}
     return render(request, "fairytales/update_fairytale.html", context)
 
 
 def delete_fairytale(request, id):
-    fairytale = get_object_or_404(Fairytale, id = id)
-    if request.method =="POST":
+    fairytale = get_object_or_404(Fairytale, id=id)
+    if request.method == "POST":
         fairytale.delete()
         return redirect("/fairytales")
 
     return render(request, "fairytales/delete_fairytale.html")
 
 
-
 def add_category(request):
     success_message = ""
     form = None
     if request.method == "POST":
-        form= CategoryForm(request.POST)
+        form = CategoryForm(request.POST)
         is_valid = form.is_valid()
         if is_valid:
             form.save()
@@ -141,30 +141,33 @@ def add_comment(request, pk):
         form = CommentForm(request.POST or None)
         is_valid = form.is_valid()
         if is_valid:
-            form.save()
+            fairytale = get_object_or_404(Fairytale, pk=pk)
+            comment = form.save(commit=False)
+            comment.fairytale = fairytale
+            comment.save()
             success_message = "Your comment has been saved."
             return redirect("/fairytales")
         else:
             success_message = "The form needs fixes."
     else:
-        form = CommentForm(initial={
-            'fairytale': pk,
-            'name': request.user
-        })
+        form = CommentForm(initial={"name": request.user})
 
     context = {"form": form, "success_message": success_message}
     return render(request, "fairytales/add_comment.html", context)
 
+
 def search(request):
     success_message = ""
     search_results = []
-    if 'query' in request.GET:
+    if "query" in request.GET:
         form = SearchForm(request.GET)
         is_valid = form.is_valid()
         if is_valid:
-            search_term = request.GET['query']
+            search_term = request.GET["query"]
             search_results = Fairytale.objects.filter(
-                Q(title__icontains=search_term) | Q(body__icontains=search_term) | Q(author__icontains=search_term)
+                Q(title__icontains=search_term)
+                | Q(body__icontains=search_term)
+                | Q(author__icontains=search_term)
             )
             if search_results:
                 success_message = f'Fairytales matching "{search_term}":'
@@ -174,28 +177,29 @@ def search(request):
             success_message = "Form needs fixes!"
     else:
         form = SearchForm()
-    context = {"form": form, "success_message": success_message, 'search_results': search_results}
-    return render(request,"fairytales/search.html", context)
+    context = {
+        "form": form,
+        "success_message": success_message,
+        "search_results": search_results,
+    }
+    return render(request, "fairytales/search.html", context)
 
 
 @login_required
 def profile(request):
-    success_message= ""
-    if request.method == 'POST':
-        p_form = ProfileUpdateForm(request.POST,
-                                   request.FILES,
-                                   instance=request.user.profile)
+    success_message = ""
+    if request.method == "POST":
+        p_form = ProfileUpdateForm(
+            request.POST, request.FILES, instance=request.user.profile
+        )
         if p_form.is_valid():
             p_form.save()
-            success_message=f'Your account has been updated!'
-            return redirect('profile') # Redirect back to profile page
+            success_message = f"Your account has been updated!"
+            return redirect("profile")  # Redirect back to profile page
 
     else:
         p_form = ProfileUpdateForm(instance=request.user.profile)
 
-    context = {
-        'p_form': p_form, "success_message": success_message
-    }
+    context = {"p_form": p_form, "success_message": success_message}
 
-    return render(request, 'fairytales/profile.html', context)
-
+    return render(request, "fairytales/profile.html", context)

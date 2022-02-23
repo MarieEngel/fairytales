@@ -15,7 +15,7 @@ class Fairytale(models.Model):
     slug = models.SlugField(unique=True)
     posted_by = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
     vector_column = SearchVectorField(null=True)  # don't use 'models.' before search
-    category = models.CharField(max_length=100, default='uncategorized')
+    category = models.CharField(max_length=100, default="uncategorized")
 
     class Meta:
         indexes = (GinIndex(fields=["vector_column"]),)
@@ -24,32 +24,33 @@ class Fairytale(models.Model):
         return f"{self.title} - {self.author}"
 
 
-
 class Category(models.Model):
-    name= models.CharField(max_length=100)
+    name = models.CharField(max_length=100)
 
     class Meta:
-        verbose_name = 'Category'
-        verbose_name_plural = 'Categories'
+        verbose_name = "Category"
+        verbose_name_plural = "Categories"
 
     def __str__(self):
         return self.name
-
-
 
 
 class Profile(models.Model):
     user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
     bio = models.TextField(null=True, blank=True)
     prefered_settings = models.JSONField(null=True, blank=True)
-    image = models.ImageField(default='profile_pics/default.png', upload_to='profile_pics')
+    image = models.ImageField(
+        default="profile_pics/default.png", upload_to="profile_pics"
+    )
 
     def __str__(self):
-        return f'{self.user.username} Profile'
+        return f"{self.user.username} Profile"
 
 
 class Comment(models.Model):
-    fairytale = models.ForeignKey(Fairytale,related_name="comments", on_delete=models.CASCADE)
+    fairytale = models.ForeignKey(
+        Fairytale, related_name="comments", on_delete=models.CASCADE
+    )
     name = models.CharField(max_length=255)
     body = models.TextField()
     date = models.DateTimeField(auto_now_add=True)
