@@ -1,10 +1,11 @@
 {% extends 'fairytales/base.html' %}
 {% block content %}
 <h1>Comment</h1>
+<div class="col-sm-7">
     <form method="post">
         {{ form.as_p }}
         {% csrf_token %}
-        <button type="submit" class="btn btn-sm btn-light">Leave Comment</button>
+        <button type="submit" class="btn btn-sm btn-dark">Leave Comment</button>
     </form>
-    <p>{{ success_message }}</p>
+</div>
 {% endblock content %}

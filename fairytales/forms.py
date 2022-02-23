@@ -5,11 +5,11 @@ from .models import Fairytale, Profile, Category, Comment
 
 
 class LoginForm(forms.Form):
-    username = forms.CharField(max_length=50)
+    username = forms.CharField(max_length=50, widget=forms.TextInput(attrs={"class": "form-control"}))
     password = forms.CharField(
-        max_length=50, widget=forms.PasswordInput
-    )  # hides the input
-
+        max_length=50, widget=forms.PasswordInput(attrs={"class": "form-control"})
+    )
+   
 
 # class AddFairytaleForm(ModelForm):
 #     class Meta:
@@ -18,6 +18,8 @@ class LoginForm(forms.Form):
 #         widgets = {
 #             "posted_by": HiddenInput()
 #         }
+
+
 choices = Category.objects.all().values_list(
     "name", "name"
 )  # alternative for hard coding
@@ -32,8 +34,13 @@ class AddFairytaleForm(ModelForm):
         model = Fairytale
         exclude = ["posted_by", "vector_column"]
         widgets = {
+            "title": forms.TextInput(attrs={"class": "form-control"}),
+            "author": forms.TextInput(attrs={"class": "form-control"}),
+            "image":forms.FileInput(attrs={"class": "form-control"}),
+            "body": forms.Textarea(attrs={"class": "form-control"}),
+            "slug": forms.TextInput(attrs={"class": "form-control"}),
             "category": forms.Select(
-                choices=choice_list, attrs={"class": "form-controle"}
+                choices=choice_list, attrs={"class": "form-control"}
             )
         }
 
@@ -52,9 +59,14 @@ class CategoryForm(ModelForm):
     class Meta:
         model = Category
         fields = "__all__"
+        widgets = {
+            "name": forms.TextInput(attrs={"class": "form-control"})}
 
 
 class CommentForm(ModelForm):
     class Meta:
         model = Comment
         exclude = ["fairytale"]
+        widgets = {
+            "name": forms.TextInput(attrs={"class": "form-control"}),
+            "body": forms.Textarea(attrs={"class": "form-control"})}
