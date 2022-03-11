@@ -14,8 +14,12 @@
 </small></p>
 <hr>
 </br>
-{% if fairytale.image %}
-    <p><img src="{{ fairytale.image.url }}" class="img-thumbnail" alt="New Image" /></p>
+
+
+{% if fairytale.thumbnail %}
+    <p><img src="{{ fairytale.thumbnail.url }}" class="img-thumbnail" alt="New Image" /></p>
+{% elif fairytale.image %}
+    <p><img src="{{ fairytale.image.url }}" class="img-thumbnail" alt="New Image" /></p> 
 {% endif %}
 <p>{{ fairytale.body}}</p>
 <br/>
