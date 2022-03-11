@@ -14,6 +14,7 @@ from .forms import (
     CommentForm,
 )
 from django.db.models import Q
+from django.utils.translation import gettext as _
 
 
 def index(request):
@@ -31,12 +32,12 @@ def login_page(request):
             )
             if user:
                 login(request, user)
-                messages.success(request, f"Hi {user.username}, you have been logged in.")
+                messages.success(request, _(f"Hi {user.username}, you have been logged in."))
                 return redirect("/fairytales")
             else:
-                messages.warning(request, "Login failed.")
+                messages.warning(request, _("Login failed."))
         else:
-            messages.warning(request, "Login failed.")
+            messages.warning(request, _("Login failed."))
     else:
         form = LoginForm()
     context = {"form": form, "success_message": success_message}
