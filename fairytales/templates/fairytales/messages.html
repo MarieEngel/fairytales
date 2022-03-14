@@ -1,15 +1,15 @@
-
-{%if messages%}
+{% if messages %}
     {% for message in messages %}
         <small>
-        <div class="container-fluid p-0">
-        <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert" >
-            <button  class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">×</span>
-            </button>
-            {{ message }}
-        </div>
-        </div>
-    </small>
+            <div class="container-fluid p-0">
+                <div class="alert {{ message.tags }} alert-dismissible fade show"
+                     role="alert">
+                    <button class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    {{ message }}
+                </div>
+            </div>
+        </small>
     {% endfor %}
 {% endif %}

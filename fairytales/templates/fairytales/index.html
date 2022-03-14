@@ -1,21 +1,21 @@
-
-{% extends 'fairytales/base.html' %} {%block content%}
-{% load static %}
-{% load i18n %}
-
-{% include 'fairytales/messages.html' %}
-
-<h1>{% trans "Welcome to my favourite Fairytales!" %}</h1>
+{% extends 'fairytales/base.html' %}
+{% block content %}
+    {% load static %}
+    {% load i18n %}
+    {% include 'fairytales/messages.html' %}
+    <h1>{% trans "Welcome to my favourite Fairytales!" %}</h1>
 </br>
-
-<img class="img-thumbnail" src=" {% static '/fairytales/title_pic.jpeg' %}  " alt="title picture">
-
-</br></br>
+<img class="img-thumbnail"
+     src=" {% static '/fairytales/title_pic.jpeg' %}  "
+     alt="title picture">
+</br>
+</br>
 <h5>{% trans "So what is this about?" %}</h5>
-
-<p>{% trans "With this project I exercise the coding skills I gained so far on my Python learning path." %}
+<p>
+    {% trans "With this project I exercise the coding skills I gained so far on my Python learning path." %}
 </p>
-<p>{% trans "Here is a list of things I learned to do with Django by now:" %}
+<p>
+    {% trans "Here is a list of things I learned to do with Django by now:" %}
     <ul>
         <li>Create a simple app</li>
         <li>Create Admin</li>
@@ -32,6 +32,4 @@
         <li></li>
     </ul>
 </p>
-
-
-{%endblock%}
+{% endblock %}

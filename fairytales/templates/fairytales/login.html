@@ -1,14 +1,12 @@
-
 {% extends 'fairytales/base.html' %}
 {% block content %}
-<h1>Login</h1>
-{% include 'fairytales/messages.html' %}
-<div class="col-sm-7">
-    <form method="post">
-        {{ form.as_p }}
-        {% csrf_token %}
-        <button type="submit" class="btn btn-sm btn-dark">Submit</button>
-    </form>
-</div>
-
+    <h1>Login</h1>
+    {% include 'fairytales/messages.html' %}
+    <div class="col-sm-7">
+        <form method="post">
+            {{ form.as_p }}
+            {% csrf_token %}
+            <button type="submit" class="btn btn-sm btn-dark">Submit</button>
+        </form>
+    </div>
 {% endblock content %}

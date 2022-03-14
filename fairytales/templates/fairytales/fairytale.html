@@ -1,49 +1,60 @@
-{% extends 'fairytales/base.html' %} {%block title%}{{fairytale.title}}{%endblock%}
-{%block content%}
-
-<h1>{{fairytale.title}}</h1>
-<h3>{{fairytale.author}}</h3>
-<p><small>posted by
-    {{fairytale.posted_by}}
-    {% if user.is_authenticated%}
-        {% if user.id == fairytale.posted_by.id %}
-            - <a href="{%url 'update_fairytale' fairytale.id %}"> (Edit)</a>
-            - <a href="{%url 'delete_fairytale' fairytale.id %}"> (Delete)</a>
-        {% endif %}
+{% extends 'fairytales/base.html' %}
+{% block title %}
+    {{ fairytale.title }}{% endblock %}
+    {% block content %}
+        <h1>{{ fairytale.title }}</h1>
+        <h3>{{ fairytale.author }}</h3>
+        <p>
+            <small>posted by
+                {{ fairytale.posted_by }}
+                {% if user.is_authenticated %}
+                    {% if user.id == fairytale.posted_by.id %}
+                        - <a href="{% url 'update_fairytale' fairytale.id %}">(Edit)</a>
+                        - <a href="{% url 'delete_fairytale' fairytale.id %}">(Delete)</a>
+                    {% endif %}
+                {% endif %}
+            </small>
+        </p>
+        <hr>
+    </br>
+    {% if fairytale.with_flag %}
+        <p>
+            <img src="{{ fairytale.with_flag.url }}"  alt="New Image" />
+        </p>
+    {% elif fairytale.thumbnail %}
+        <p>
+            <img src="{{ fairytale.thumbnail.url }}"
+                 class="img-thumbnail"
+                 alt="New Image"/>
+        </p>
+    {% elif fairytale.image %}
+        <p>
+            <img src="{{ fairytale.image.url }}" class="img-thumbnail" alt="New Image" />
+        </p>
     {% endif %}
-</small></p>
-<hr>
-</br>
-
-
-{% if fairytale.thumbnail %}
-    <p><img src="{{ fairytale.thumbnail.url }}" class="img-thumbnail" alt="New Image" /></p>
-{% elif fairytale.image %}
-    <p><img src="{{ fairytale.image.url }}" class="img-thumbnail" alt="New Image" /></p> 
+    <p>
+        {{ fairytale.body }}
+    </p>
+    <br />
+    <hr>
+    <h3>Comments...</h3>
+    {% if not fairytale.comments.all %}
+        No Comments yet. <a href="{% url 'add_comment' fairytale.pk %}">Leave a Comment</a>
+    {% else %}
+        <a href="{% url 'add_comment' fairytale.pk %}">Add Comment</a>
+    </br>
+    {% for comment in fairytale.comments.all %}
+        <strong>
+            {{ comment.name }} -
+            {{ comment.date }}
+        </strong>
+        <br />
+        {{ comment.body }}
+    </br>
+{% endfor %}
 {% endif %}
-<p>{{ fairytale.body}}</p>
-<br/>
+<br />
+<br />
 <hr>
-<h3>Comments...</h3>
-{%if not fairytale.comments.all%}
-    No Comments yet. <a href="{% url 'add_comment' fairytale.pk %}">
-        Leave a Comment</a>
-{%else%}
-<a href="{% url 'add_comment' fairytale.pk %}">Add Comment</a>
-</br>
-        {%for comment in fairytale.comments.all %}
-            <strong>
-                {{comment.name}} -
-                {{comment.date}}
-            </strong>
-            <br/>
-            {{comment.body}}
-        </br>
-        {%endfor%}
-{%endif%}
-<br/>
-<br/>
-<hr>
-<a href="{%url "collection"%}">Back to my collection of Fairytales</a>
-
-{%endblock%}
+<a href="{% url "collection" %}">Back to my collection of Fairytales</a>
+{% endblock %}
