@@ -19,9 +19,10 @@
     </br>
     {% if fairytale.with_flag %}
         <p>
-            <img src="{{ fairytale.with_flag.url }}"  alt="New Image" />
-        </p>
-    {% elif fairytale.thumbnail %}
+            <img src="{{ fairytale.with_flag.url }}" class="img-thumbnail" alt="New Image"/>
+        </p> 
+        {% endif %}
+    {% if fairytale.thumbnail %}
         <p>
             <img src="{{ fairytale.thumbnail.url }}"
                  class="img-thumbnail"
@@ -29,8 +30,8 @@
         </p>
     {% elif fairytale.image %}
         <p>
-            <img src="{{ fairytale.image.url }}" class="img-thumbnail" alt="New Image" />
-        </p>
+            <img src="{{ fairytale.image.url }}" class="img-thumbnail" alt="New Image"/>
+        </p> 
     {% endif %}
     <p>
         {{ fairytale.body }}

@@ -32,7 +32,7 @@ for item in choices:
 class AddFairytaleForm(ModelForm):
     class Meta:
         model = Fairytale
-        exclude = ["posted_by", "vector_column"]
+        exclude = ["posted_by", "vector_column", "thumbnail", "with_flag"]
         widgets = {
             "title": forms.TextInput(attrs={"class": "form-control"}),
             "author": forms.TextInput(attrs={"class": "form-control"}),

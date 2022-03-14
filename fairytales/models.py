@@ -1,4 +1,5 @@
 from .make_thumbnail import make_thumbnail
+from .add_flag import add_flag
 from io import BytesIO
 from unittest.util import _MAX_LENGTH
 from django.db import models
@@ -18,6 +19,7 @@ class Fairytale(models.Model):
     author = models.CharField(max_length=100)
     image = models.ImageField(null=True, blank=True, upload_to="images/")
     thumbnail = models.ImageField(null=True, blank=True, upload_to="images/")
+    with_flag = models.ImageField(null=True, blank=True, upload_to="images/")
     body = models.TextField()
     slug = models.SlugField(unique=True)
     posted_by = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
@@ -32,8 +34,10 @@ class Fairytale(models.Model):
 
     def save(self, *args, **kwargs):
         self.thumbnail = make_thumbnail(self.image, size=(100, 100))
-
+        self.with_flag = add_flag(self.image)
         super().save(*args, **kwargs)
+
+
 
     # def save(self, *args, **kwargs):
     #     self.image.save()

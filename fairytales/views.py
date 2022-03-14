@@ -109,11 +109,12 @@ def add_fairytale(request):
 def update_fairytale(request, id):
     form = None
     fairytale = get_object_or_404(Fairytale, id=id)
-    form = AddFairytaleForm(request.POST or None, instance=fairytale)
-    if form.is_valid():
-        form.save()
-        messages.success(request, "You have successfully updated the fairytale.")
-        return redirect("/fairytales")
+    form = AddFairytaleForm(request.POST or None, request.FILES or None, instance=fairytale)
+    if request.method == "POST":
+        if form.is_valid():
+            form.save()
+            messages.success(request, "You have successfully updated the fairytale.")
+            return redirect("/fairytales")
     context = {"form": form, "fairytale": fairytale}
     return render(request, "fairytales/update_fairytale.html", context)
 
