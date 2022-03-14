@@ -20,6 +20,7 @@ from django.utils.translation import gettext as _
 def index(request):
     return render(request, "fairytales/index.html")
 
+
 def login_page(request):
     form = LoginForm()
     success_message = ""
@@ -32,7 +33,9 @@ def login_page(request):
             )
             if user:
                 login(request, user)
-                messages.success(request, _(f"Hi {user.username}, you have been logged in."))
+                messages.success(
+                    request, _(f"Hi {user.username}, you have been logged in.")
+                )
                 return redirect("/fairytales")
             else:
                 messages.warning(request, _("Login failed."))
@@ -60,7 +63,7 @@ def profile(request):
         if p_form.is_valid():
             p_form.save()
             success_message = f"Your account has been updated!"
-            return redirect("profile") 
+            return redirect("profile")
 
     else:
         p_form = ProfileUpdateForm(instance=request.user.profile)
@@ -69,6 +72,7 @@ def profile(request):
 
     return render(request, "fairytales/profile.html", context)
 
+
 # overview
 def collection(request):
     collection_list = Fairytale.objects.all().order_by("-id")
@@ -76,16 +80,15 @@ def collection(request):
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
     context = {"collection_list": collection_list, "page_obj": page_obj}
-    return render(
-        request,
-        "fairytales/collection.html", context
-    )
+    return render(request, "fairytales/collection.html", context)
+
 
 # fairytale
 def fairytale(request, slug):
     fairytale = Fairytale.objects.get(slug=slug)
     context = {"fairytale": fairytale}
     return render(request, "fairytales/fairytale.html", context)
+
 
 @login_required
 def add_fairytale(request):
@@ -96,7 +99,7 @@ def add_fairytale(request):
         is_valid = form.is_valid()
         if is_valid:
             form.save()
-            messages.success(request,"Your fairytale has been saved.")
+            messages.success(request, "Your fairytale has been saved.")
             return redirect("/fairytales")
         else:
             messages.warning(request, "The form needs fixes.")
@@ -105,11 +108,14 @@ def add_fairytale(request):
     context = {"form": form}
     return render(request, "fairytales/add_fairytale.html", context)
 
+
 @login_required
 def update_fairytale(request, id):
     form = None
     fairytale = get_object_or_404(Fairytale, id=id)
-    form = AddFairytaleForm(request.POST or None, request.FILES or None, instance=fairytale)
+    form = AddFairytaleForm(
+        request.POST or None, request.FILES or None, instance=fairytale
+    )
     if request.method == "POST":
         if form.is_valid():
             form.save()
@@ -117,6 +123,7 @@ def update_fairytale(request, id):
             return redirect("/fairytales")
     context = {"form": form, "fairytale": fairytale}
     return render(request, "fairytales/update_fairytale.html", context)
+
 
 @login_required
 def delete_fairytale(request, id):
@@ -133,6 +140,7 @@ def CategoryView(request, cats):
     category_entries = Fairytale.objects.filter(category=cats)
     context = {"category_entries": category_entries, "cats": cats}
     return render(request, "fairytales/categories.html", context)
+
 
 @login_required
 def add_category(request):
@@ -163,7 +171,7 @@ def add_comment(request, pk):
             comment = form.save(commit=False)
             comment.fairytale = fairytale
             comment.save()
-            messages.success(request,"Your comment has been saved.")
+            messages.success(request, "Your comment has been saved.")
             return redirect(f"/fairytales/collection")
         else:
             messages.warning(request, "The form needs fixes.")
@@ -202,6 +210,3 @@ def search(request):
         "search_results": search_results,
     }
     return render(request, "fairytales/search.html", context)
-
-
-

@@ -14,6 +14,7 @@ import sys
 
 BASE_DIR = Path(__file__).resolve().parent
 
+
 class Fairytale(models.Model):
     title = models.CharField(max_length=100)
     author = models.CharField(max_length=100)
@@ -36,38 +37,6 @@ class Fairytale(models.Model):
         self.thumbnail = make_thumbnail(self.image, size=(100, 100))
         self.with_flag = add_flag(self.image)
         super().save(*args, **kwargs)
-
-
-
-    # def save(self, *args, **kwargs):
-    #     self.image.save()
-    #     flag_path = os.path.join(BASE_DIR, 'static/fairytales/flag.png')
-    #     current_image_path = os.path.join(BASE_DIR.parent, self.image.url[1:])
-    #     flag = Image.open(flag_path)
-    #     im = Image.open(current_image_path)
-    #     flag = Image.open(flag_path)
-    #     im = Image.open(self.image)
-    #     # output = BytesIO()
-    #     name, suffix = self.image.split('.')
-    #     image_copy = im.copy()
-    #     position = ((image_copy.width - flag.width), (image_copy.height - flag.height))
-    #     image_copy.paste(flag, position)
-    #     # image_copy.save(output, format='JPEG')
-	# 	# output.seek(0)
-    #     image_copy.save(f'{name}_flag{suffix}')
-
-        # self.image = InMemoryUploadedFile(output,'ImageField', "%s.jpg" %self.image.name.split('.')[0])
-
-        # super(Fairytale,self).save()
-        # img = Image.open(self.image.path) # Open image
-        # if img.height > 200 or img.width > 200:
-        #     output_size = (200, 200)
-        #     img.thumbnail(output_size) # Resize image
-        #     img.save(self.image.path) # Save it again and override the larger 
-
-    
-
-
 
 
 class Category(models.Model):

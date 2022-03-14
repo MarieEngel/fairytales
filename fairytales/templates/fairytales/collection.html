@@ -1,31 +1,30 @@
 {% extends 'fairytales/base.html' %}
-{% block title %}
-    Browse by collection{% endblock %}
-    {% block content %}
-        {% include 'fairytales/messages.html' %}
-        <h1>Browse my collection of Fairytales:</h1>
-        <p>
-            <ul>
-                {% for fairytale in page_obj %}
-                    <li>
-                        <a href="{% url 'fairytale' fairytale.slug %}">{{ fairytale.title }}</a> - <a href="{% url 'category' fairytale.category %}">{{ fairytale.category }}</a>  - {{ fairytale.author }} (posted by {{ fairytale.posted_by }}) --<small><a href="{% url 'update_fairytale' fairytale.id %}">(Edit)</a><a href="{% url 'delete_fairytale' fairytale.id %}">(Delete)</a></small>
-                    </li>
-                {% endfor %}
-            </ul>
-        </p>
-        <div class="pagination">
-            <span class="step-links">
-                {% if page_obj.has_previous %}
-                    <a href="?page=1">&laquo; first</a>
-                    <a href="?page={{ page_obj.previous_page_number }}">previous</a>
-                {% endif %}
-                <span class="current">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.</span>
-                {% if page_obj.has_next %}
-                    <a href="?page={{ page_obj.next_page_number }}">next</a>
-                    <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
-                {% endif %}
-            </span>
-        </div>
-        <br />
-        <a href="{% url "index" %}">Back to home</a>
-    {% endblock %}
+{% block title %}Browse by collection{% endblock %}
+{% block content %}
+    {% include 'fairytales/messages.html' %}
+    <h1>Browse my collection of Fairytales:</h1>
+    <p>
+        <ul>
+            {% for fairytale in page_obj %}
+                <li>
+                    <a href="{% url 'fairytale' fairytale.slug %}">{{ fairytale.title }}</a> - <a href="{% url 'category' fairytale.category %}">{{ fairytale.category }}</a>  - {{ fairytale.author }} (posted by {{ fairytale.posted_by }}) --<small><a href="{% url 'update_fairytale' fairytale.id %}">(Edit)</a><a href="{% url 'delete_fairytale' fairytale.id %}">(Delete)</a></small>
+                </li>
+            {% endfor %}
+        </ul>
+    </p>
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+            {% endif %}
+            <span class="current">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.</span>
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+    <br />
+    <a href="{% url "index" %}">Back to home</a>
+{% endblock %}

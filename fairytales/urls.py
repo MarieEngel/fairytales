@@ -18,5 +18,5 @@ urlpatterns = [
     path("collection/edit/<int:id>/", views.update_fairytale, name="update_fairytale"),
     path("collection/<int:id>/delete", views.delete_fairytale, name="delete_fairytale"),
     path("collection/<int:pk>/comment/", views.add_comment, name="add_comment"),
-    path('i18n/', include('django.conf.urls.i18n')),
-]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    path("i18n/", include("django.conf.urls.i18n")),
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
